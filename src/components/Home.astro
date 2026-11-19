@@ -1,22 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SelectedWork from './SelectedWork.astro';
 import { content, projects, type Lang } from '../data/content';
 const {lang='es'}=Astro.props as {lang?:Lang};
 const t=content[lang];
 const projectPath=(slug:string)=>lang==='es'?`/proyectos/${slug}/`:`/en/projects/${slug}/`;
 ---
-<Layout lang={lang} title={lang==='es'?'ROK Atelier — Arquitectura que se siente':'ROK Atelier — Architecture to be felt'} alternate={lang==='es'?'/en/':'/'}>
+<Layout lang={lang} title={lang==='es'?'ROK Atelier — Arquitectura que se siente':'ROK Atelier — Architecture to be felt'} description={lang==='es'?'Una selección de proyectos de arquitectura e interiorismo de ROK Atelier y una propuesta de experiencia digital.':'Selected architecture and interior design projects by ROK Atelier and a proposed digital experience.'} alternate={lang==='es'?'/en/':'/'}>
   <section class="hero" aria-labelledby="hero-title">
     <img class="hero-image" src="/images/hero-concept.webp" srcset="/images/hero-concept-mobile.webp 900w, /images/hero-concept.webp 2200w" sizes="100vw" alt={projects[0][lang].imageAlt} width="2200" height="1238" fetchpriority="high" />
     <div class="hero-shade"></div><div class="hero-side-note">{t.tagline}</div>
     <div class="hero-content"><p class="eyebrow hero-eyebrow">{t.heroLabel}</p><h1 id="hero-title"><span>{t.heroTitle[0]}</span><em>{t.heroTitle[1]}</em></h1><a class="hero-link" href="#espacios">{t.explore}<span class="circle-plus" aria-hidden="true"><span class="plus"></span></span></a></div>
-    <div class="hero-bottom"><p>{t.heroFoot}</p><span class="hero-caption">{t.heroCaption}</span><a href="#esencia" class="scroll-prompt"><span></span>{t.scroll}</a></div>
+    <div class="hero-bottom"><p>{t.heroFoot}<small class="hero-image-credit">{lang==='es'?'Visualización conceptual':'Conceptual visualization'}</small></p><span class="hero-caption">{t.heroCaption}</span><a href="#esencia" class="scroll-prompt"><span></span>{t.scroll}</a></div>
   </section>
   <section class="essence section-pad" id="esencia">
     <div class="section-kicker reveal"><span class="small-rule"></span><p class="eyebrow">{t.introLabel}</p></div>
     <div class="essence-main"><h2 class="reveal">{t.introTitle[0]}<br/><em>{t.introTitle[1]}</em></h2><div class="essence-bottom reveal"><span class="architectural-mark" aria-hidden="true"><i></i><i></i><i></i></span><div><p>{t.introBody}</p><a class="text-link" href="#atelier">{t.introLink}<span class="plus" aria-hidden="true"></span></a></div></div></div>
   </section>
-  <section class="projects-section section-pad" id="espacios">
+  <SelectedWork lang={lang} />
+  <section class="projects-section section-pad" id="exploraciones">
     <div class="projects-heading reveal"><div><p class="eyebrow">{t.projectsLabel}</p><h2>{t.projectsTitle}</h2></div><p>{t.projectsDesc}</p></div>
     <div class="projects-toolbar reveal"><div class="project-filters" role="group" aria-label={lang==='es'?'Filtrar espacios':'Filter spaces'}>{t.filters.map((f,i)=><button data-filter={['all','architecture','interiors'][i]} aria-pressed={i===0}>{f}</button>)}</div><span class="collection-note">{t.reference}</span></div>
     <div class="project-grid">

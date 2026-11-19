@@ -21,6 +21,7 @@ El resultado listo para alojar se genera en `dist/`. Puede publicarse como sitio
 ## Incluido
 
 - Portada inmersiva con visual arquitectónico original.
+- Selección de tres proyectos publicados por ROK Atelier: oficinas en La Roma, cocina en Acapulco y vestidor con lounge en CDMX. Fichas ES/EN, diez imágenes locales y galería con navegación por botones y teclado.
 - Portafolio con filtros de arquitectura e interiorismo.
 - Tres páginas de exploración conceptual, cada una con galería ampliable.
 - Versión completa en español e inglés; el selector conserva el proyecto abierto.
@@ -34,9 +35,11 @@ El resultado listo para alojar se genera en `dist/`. Puede publicarse como sitio
 
 ```text
 src/components/Home.astro      Portada ES/EN
+src/components/SelectedWork.astro Selección editorial del trabajo de ROK
 src/components/Project.astro   Presentación de cada espacio
 src/layouts/Layout.astro       Navegación, footer, formulario y metadatos
 src/data/content.ts            Textos ES/EN y datos de las exploraciones
+src/data/client-projects.ts    Proyectos del atelier, imágenes y fuentes
 src/styles/global.css         Dirección artística y responsive
 src/pages/                    Rutas estáticas
 public/images/                Imágenes optimizadas
@@ -45,9 +48,9 @@ public/fonts/                 Tipografías locales
 
 ## Naturaleza de la propuesta
 
-El nombre ROK Atelier y el enlace `https://www.instagram.com/rok.atelier/` provienen del encargo. Instagram no permitió recuperar el contenido del perfil durante la preparación. No se afirman datos biográficos, premios, ubicaciones, experiencia, clientes ni realizaciones verificadas.
+El nombre ROK Atelier y el enlace `https://www.instagram.com/rok.atelier/` provienen del encargo. El 18 de noviembre de 2026 se consultó el perfil público en Firefox para incorporar una selección de sus propios proyectos. Los enlaces originales figuran en las fichas y en `ASSETS.md`. Solo se identifican los espacios y ubicaciones publicados por el atelier; no se inventan premios, superficies, fechas de obra ni datos biográficos.
 
-El wordmark, los textos y los nombres **Refugio**, **Materia** y **Umbral** son propuestas creativas. Las imágenes son conceptuales o referencias visuales, no trabajos atribuidos al atelier. Esto se indica en el portfolio, en las fichas y en el pie de página.
+El wordmark, los textos editoriales y los nombres **Refugio**, **Materia** y **Umbral** son propuestas creativas. Esas tres exploraciones y la portada mantienen sus imágenes conceptuales o de referencia, diferenciadas de los proyectos publicados por el atelier. Esto se indica en el portfolio, en las fichas y en el pie de página.
 
 Antes de convertir la maqueta en el sitio oficial: sustituir las referencias por fotografías y fichas reales, confirmar el logotipo y el contenido, definir el medio de contacto definitivo, actualizar `site` en `astro.config.mjs` y retirar `noindex`/`Disallow` cuando se autorice indexación. Si se requiere un formulario con envío, conectar un endpoint real y su aviso de privacidad.
 

@@ -1,18 +1,64 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { content, projects, type Lang } from '../data/content';
+import { clientProjects } from '../data/client-projects';
 const {lang='es',slug}=Astro.props as {lang:Lang;slug:string};
-const index=projects.findIndex(p=>p.slug===slug);const project=projects[index];const p=project[lang];const t=content[lang];const next=projects[(index+1)%projects.length];const home=lang==='es'?'/':'/en/';
+const clientProject=clientProjects.find(project=>project.slug===slug);
+const collection=clientProject?clientProjects:projects;
+const index=collection.findIndex(project=>project.slug===slug);
+const project=collection[index];const p=project[lang];const t=content[lang];
+const next=collection[(index+1)%collection.length];const home=lang==='es'?'/':'/en/';
 const alternate=lang==='es'?`/en/projects/${slug}/`:`/proyectos/${slug}/`;
 const nextUrl=lang==='es'?`/proyectos/${next.slug}/`:`/en/projects/${next.slug}/`;
+const gallery=clientProject?.gallery||[{src:project.secondary,width:1800,height:1200,es:p.secondaryAlt,en:p.secondaryAlt}];
+const detailLabels=clientProject?(lang==='es'?['Ubicación','Espacio','Atelier']:['Location','Space','Atelier']):t.detailLabels;
+const sourceNote=lang==='es'?'Imágenes publicadas por ROK Atelier. Selección editorial para esta propuesta web.':'Images published by ROK Atelier. An editorial selection for this website proposal.';
 ---
 <Layout lang={lang} title={`${p.title} — ROK Atelier`} description={p.description} alternate={alternate}>
-  <section class="project-hero"><img src={project.image} alt={p.imageAlt} fetchpriority="high" width="2200" height="1238"/><div class="hero-shade"></div><div class="project-hero-content"><a href={`${home}#espacios`} class="text-link light">{t.back}</a><div><p class="eyebrow">{t.concept} · {p.category}</p><h1>{p.title}<span>.</span></h1><p class="project-subtitle">{p.subtitle}</p></div></div></section>
-  <section class="project-story section-pad"><div class="reveal"><p class="eyebrow">ROK — {t.reference}</p><h2>{p.statement.split('\n').map((s,i)=>i===0?<>{s}<br/></>:<em>{s}</em>)}</h2></div><div class="project-story-copy reveal"><p>{p.description}</p><dl>{p.values.map((v,i)=><div><dt>{t.detailLabels[i]}</dt><dd>{v}</dd></div>)}</dl></div></section>
-  <section class="project-gallery section-pad"><div class="gallery-title reveal"><p class="eyebrow">{t.gallery}</p><span>ROK ATELIER</span></div><button class="gallery-image reveal" data-lightbox-open aria-label={lang==='es'?'Ampliar imagen':'Enlarge image'}><img src={project.secondary} alt={p.secondaryAlt} loading="lazy" width="1800" height="1200"/><span class="circle-plus"><span class="plus" aria-hidden="true"></span></span></button><p class="project-disclaimer">{t.projectNote}</p></section>
-  <section class="next-project section-pad"><p class="eyebrow">{t.next}</p><a href={nextUrl}><h2>{next[lang].title}<em>.</em></h2><span class="circle-plus" aria-hidden="true"><span class="plus"></span></span></a><p>{next[lang].subtitle}</p></section>
-  <dialog class="lightbox" aria-label={lang==='es'?'Vista ampliada':'Enlarged image'}><button class="lightbox-close" aria-label={t.close}>×</button><img src={project.secondary} alt={p.secondaryAlt}/></dialog>
+  <section class:list={['project-hero',{'project-hero-client':Boolean(clientProject)}]}>
+    <img src={project.image} alt={p.imageAlt} fetchpriority="high" width="2200" height="1238"/>
+    <div class="hero-shade"></div>
+    <div class="project-hero-content">
+      <a href={`${home}#${clientProject?'espacios':'exploraciones'}`} class="text-link light">{t.back}</a>
+      <div><p class="eyebrow">{clientProject?'ROK ATELIER':t.concept} · {p.category}</p><h1>{p.title}<span>.</span></h1><p class="project-subtitle">{p.subtitle}</p></div>
+    </div>
+  </section>
+  <section class="project-story section-pad">
+    <div class="reveal"><p class="eyebrow">{clientProject?`ROK — ${p.values[0]}`:`ROK — ${t.reference}`}</p><h2>{p.statement.split('\n').map((s,i)=>i===0?<>{s}<br/></>:<em>{s}</em>)}</h2></div>
+    <div class="project-story-copy reveal"><p>{p.description}</p><dl>{p.values.map((v,i)=><div><dt>{detailLabels[i]}</dt><dd>{v}</dd></div>)}</dl>
+      {clientProject&&<a class="text-link project-source" href={clientProject.source} target="_blank" rel="noopener noreferrer">{lang==='es'?'Ver publicación del atelier':'View the atelier’s original post'}<span class="plus" aria-hidden="true"></span></a>}
+    </div>
+  </section>
+  <section class:list={['project-gallery','section-pad',{'project-gallery-client':Boolean(clientProject)}]}>
+    <div class="gallery-title reveal"><p class="eyebrow">{t.gallery}</p><span>ROK ATELIER</span></div>
+    <div class:list={{'client-gallery-grid':Boolean(clientProject)}}>
+      {gallery.map(image=><figure class="gallery-figure reveal"><button class="gallery-image" style={clientProject?`--gallery-aspect:${image.width} / ${image.height}`:undefined} data-lightbox-open data-image-src={image.src} data-image-alt={image[lang]} aria-label={`${lang==='es'?'Ampliar imagen':'Enlarge image'}: ${image[lang]}`}><img src={image.src} alt={image[lang]} loading="lazy" width={image.width} height={image.height}/><span class="circle-plus"><span class="plus" aria-hidden="true"></span></span></button>{clientProject&&<figcaption>{image[lang]}</figcaption>}</figure>)}
+    </div>
+    <p class="project-disclaimer">{clientProject?sourceNote:t.projectNote}</p>
+  </section>
+  <section class:list={['next-project','section-pad',{'next-project-client':Boolean(clientProject)}]}><p class="eyebrow">{clientProject?(lang==='es'?'SIGUIENTE PROYECTO':'NEXT PROJECT'):t.next}</p><a href={nextUrl}><h2>{next[lang].title}<em>.</em></h2><span class="circle-plus" aria-hidden="true"><span class="plus"></span></span></a><p>{next[lang].subtitle}</p></section>
+  <dialog class="lightbox" aria-label={lang==='es'?'Vista ampliada':'Enlarged image'}>
+    <button class="lightbox-close" aria-label={t.close}>×</button><img src={gallery[0].src} alt={gallery[0][lang]}/>
+    <div class="lightbox-controls" hidden={gallery.length<2}><button data-gallery-prev aria-label={lang==='es'?'Imagen anterior':'Previous image'}>{lang==='es'?'Anterior':'Previous'}</button><span class="lightbox-counter" role="status" aria-live="polite">1 / {gallery.length}</span><button data-gallery-next aria-label={lang==='es'?'Imagen siguiente':'Next image'}>{lang==='es'?'Siguiente':'Next'}</button></div>
+  </dialog>
   <script>
-    const lightbox=document.querySelector<HTMLDialogElement>('.lightbox');document.querySelector('[data-lightbox-open]')?.addEventListener('click',()=>{lightbox?.showModal();document.body.classList.add('dialog-open');});document.querySelector('.lightbox-close')?.addEventListener('click',()=>lightbox?.close());lightbox?.addEventListener('click',e=>{if(e.target===lightbox)lightbox.close();});lightbox?.addEventListener('close',()=>document.body.classList.remove('dialog-open'));
+    const lightbox=document.querySelector<HTMLDialogElement>('.lightbox');
+    const image=lightbox?.querySelector('img');
+    const gallery=Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'));
+    const counter=document.querySelector('.lightbox-counter');
+    let activeImage=0;
+    const showImage=(index:number)=>{
+      activeImage=(index+gallery.length)%gallery.length;
+      const item=gallery[activeImage];
+      if(image){image.src=item.dataset.imageSrc||'';image.alt=item.dataset.imageAlt||'';}
+      if(counter)counter.textContent=`${activeImage+1} / ${gallery.length}`;
+    };
+    gallery.forEach((button,index)=>button.addEventListener('click',()=>{showImage(index);lightbox?.showModal();document.body.classList.add('dialog-open');}));
+    document.querySelector('.lightbox-close')?.addEventListener('click',()=>lightbox?.close());
+    lightbox?.addEventListener('click',e=>{if(e.target===lightbox)lightbox.close();});
+    lightbox?.addEventListener('close',()=>document.body.classList.remove('dialog-open'));
+    document.querySelector('[data-gallery-prev]')?.addEventListener('click',()=>showImage(activeImage-1));
+    document.querySelector('[data-gallery-next]')?.addEventListener('click',()=>showImage(activeImage+1));
+    lightbox?.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();showImage(activeImage+(e.key==='ArrowRight'?1:-1));}});
   </script>
 </Layout>

@@ -1,5 +1,19 @@
 # Procedencia de los recursos
 
+## Selección de proyectos de ROK Atelier
+
+Consultados en el perfil público del atelier el 18 de noviembre de 2026, por encargo de Olivier para personalizar esta propuesta. Los archivos de `public/images/projects/` se alojan localmente en WebP; no dependen de una conexión a Instagram ni de URLs de CDN que caducan. Solo se han optimizado para la web, sin alterar los espacios ni generar nuevas vistas.
+
+| Proyecto presentado | Publicación original | Imágenes del carrusel |
+| --- | --- | --- |
+| Oficinas La Roma, CDMX | https://www.instagram.com/rok.atelier/p/DXzruMuGm0L/ | `roma-01`, `roma-04`, `roma-06`, `roma-10` |
+| Cocina en Acapulco | https://www.instagram.com/rok.atelier/p/DW16bjGGrLB/ | `acapulco-01`, `acapulco-02`, `acapulco-03` |
+| Vestidor y lounge, CDMX | https://www.instagram.com/rok.atelier/p/DXKNre6Gog0/ | `vestidor-01`, `vestidor-02`, `vestidor-03` |
+
+Crédito de publicación: ROK Atelier. El fotógrafo no se identifica en los datos públicos consultados. Los títulos describen los espacios y lugares indicados por el propio atelier. Las descripciones editoriales son propuestas para la web, basadas en los visuales; no se atribuyen superficies, fechas de obra, premios ni datos técnicos no publicados. Los originales en alta resolución se han recuperado a 1440 px, 1200 px o 960 px de ancho, según el archivo disponible, sin ampliación artificial.
+
+Esta selección se distingue de las exploraciones conceptuales Refugio, Materia y Umbral, que se conservan con su identificación original.
+
 ## Visualizaciones conceptuales originales
 
 Generadas con la herramienta de imagen integrada. No corresponden a una obra real ni a una realización de ROK Atelier.
