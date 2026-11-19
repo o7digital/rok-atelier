@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { content, projects, type Lang } from '../data/content';
+const {lang='es',slug}=Astro.props as {lang:Lang;slug:string};
+const index=projects.findIndex(p=>p.slug===slug);const project=projects[index];const p=project[lang];const t=content[lang];const next=projects[(index+1)%projects.length];const home=lang==='es'?'/':'/en/';
+const alternate=lang==='es'?`/en/projects/${slug}/`:`/proyectos/${slug}/`;
+const nextUrl=lang==='es'?`/proyectos/${next.slug}/`:`/en/projects/${next.slug}/`;
+---
+<Layout lang={lang} title={`${p.title} — ROK Atelier`} description={p.description} alternate={alternate}>
+  <section class="project-hero"><img src={project.image} alt={p.imageAlt} fetchpriority="high" width="2200" height="1238"/><div class="hero-shade"></div><div class="project-hero-content"><a href={`${home}#espacios`} class="text-link light">{t.back}</a><div><p class="eyebrow">{t.concept} · {p.category}</p><h1>{p.title}<span>.</span></h1><p class="project-subtitle">{p.subtitle}</p></div></div></section>
+  <section class="project-story section-pad"><div class="reveal"><p class="eyebrow">ROK — {t.reference}</p><h2>{p.statement.split('\n').map((s,i)=>i===0?<>{s}<br/></>:<em>{s}</em>)}</h2></div><div class="project-story-copy reveal"><p>{p.description}</p><dl>{p.values.map((v,i)=><div><dt>{t.detailLabels[i]}</dt><dd>{v}</dd></div>)}</dl></div></section>
+  <section class="project-gallery section-pad"><div class="gallery-title reveal"><p class="eyebrow">{t.gallery}</p><span>ROK ATELIER</span></div><button class="gallery-image reveal" data-lightbox-open aria-label={lang==='es'?'Ampliar imagen':'Enlarge image'}><img src={project.secondary} alt={p.secondaryAlt} loading="lazy" width="1800" height="1200"/><span class="circle-plus"><span class="plus" aria-hidden="true"></span></span></button><p class="project-disclaimer">{t.projectNote}</p></section>
+  <section class="next-project section-pad"><p class="eyebrow">{t.next}</p><a href={nextUrl}><h2>{next[lang].title}<em>.</em></h2><span class="circle-plus" aria-hidden="true"><span class="plus"></span></span></a><p>{next[lang].subtitle}</p></section>
+  <dialog class="lightbox" aria-label={lang==='es'?'Vista ampliada':'Enlarged image'}><button class="lightbox-close" aria-label={t.close}>×</button><img src={project.secondary} alt={p.secondaryAlt}/></dialog>
+  <script>
+    const lightbox=document.querySelector<HTMLDialogElement>('.lightbox');document.querySelector('[data-lightbox-open]')?.addEventListener('click',()=>{lightbox?.showModal();document.body.classList.add('dialog-open');});document.querySelector('.lightbox-close')?.addEventListener('click',()=>lightbox?.close());lightbox?.addEventListener('click',e=>{if(e.target===lightbox)lightbox.close();});lightbox?.addEventListener('close',()=>document.body.classList.remove('dialog-open'));
+  </script>
+</Layout>
